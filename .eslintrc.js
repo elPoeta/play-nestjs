@@ -1,4 +1,7 @@
 module.exports = {
+  "prettier/prettier": ["error", {}, {
+    "usePrettierrc": false
+  }],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: 'tsconfig.json',
