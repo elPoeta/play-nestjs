@@ -8,7 +8,7 @@ export const ormconfig : ConnectionOptions = {
   password: 'elpoeta',
   database: 'playnestjs',
   entities: [
-    __dirname + '/../**/*.entity{.ts,.js}',
+    __dirname + '/**/*.entity{.ts,.js}',
   ],
   synchronize: true,
 };
