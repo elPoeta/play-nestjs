@@ -7,5 +7,5 @@ export class TagEntity {
   id: number;
 
   @Column()
-  name: String;
+  name: string;
 }
