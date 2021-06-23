@@ -1,9 +1,10 @@
 import { Injectable } from "@nestjs/common";
+import { RegisterUserDto } from "./dto/registerUser.dto";
 
 @Injectable()
 export class UserService {
 
-  register(user) {
+  register(registerUserDto: RegisterUserDto) {
     return {
       user: {
         email: "leonardo.a.tosetto@gamil.com",
