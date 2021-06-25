@@ -4,8 +4,8 @@ import { Repository } from "typeorm";
 import { RegisterUserDto } from "./dto/registerUser.dto";
 import { UserEntity } from "./user.entity";
 import { sign } from 'jsonwebtoken';
-import { RegisterResponseInterface } from "./types/RegisterResponseInterace.interface";
-import { UserType } from "./types/user.types";
+import { UserResponseInterface } from "./types/userResponseInterace.interface";
+
 
 @Injectable()
 export class UserService {
@@ -18,7 +18,7 @@ export class UserService {
     return await this.userRepository.save(newUser);
   }
 
-  registerResponse(userEntity: UserEntity): RegisterResponseInterface {
+  registerResponse(userEntity: UserEntity): UserResponseInterface {
     return {
       user: {
         ...userEntity,
