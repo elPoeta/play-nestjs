@@ -19,6 +19,7 @@ export class UserService {
   }
 
   buildUserResponse(userEntity: UserEntity): UserResponseInterface {
+    delete userEntity.password;
     return {
       user: {
         ...userEntity,
