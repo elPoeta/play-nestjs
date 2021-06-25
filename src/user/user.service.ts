@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { RegisterUserDto } from "./dto/registerUser.dto";
+import { UserDto } from "./dto/userDto.dto";
 import { UserEntity } from "./user.entity";
 import { sign } from 'jsonwebtoken';
 import { UserResponseInterface } from "./types/userResponseInterace.interface";
@@ -12,10 +12,22 @@ export class UserService {
 
   constructor(@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>) { }
 
-  async register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
+  async register(user: UserDto): Promise<UserEntity> {
     const newUser = new UserEntity();
-    Object.assign(newUser, registerUserDto);
+    Object.assign(newUser, user);
     return await this.userRepository.save(newUser);
+  }
+
+  async login(userLogin: UserDto): Promise<UserEntity> {
+    const user: UserEntity = await this.findUserByEmail(userLogin.email);
+    if (!user) throw new HttpException('Bad Credentials', HttpStatus.UNPROCESSABLE_ENTITY);
+    const isPasswordMatch = await user.comparePassword(userLogin.password);
+    if (!isPasswordMatch) throw new HttpException('Bad Credentials', HttpStatus.UNPROCESSABLE_ENTITY);
+    return user;
+  }
+
+  async findUserByEmail(email: string): Promise<UserEntity | null> {
+    return await this.userRepository.findOne({ email }, { select: ['id', 'username', 'email', 'bio', 'image', 'password'] });
   }
 
   buildUserResponse(userEntity: UserEntity): UserResponseInterface {

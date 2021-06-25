@@ -32,4 +32,8 @@ export class UserEntity {
     return await bcrypt.genSalt(salt);
   }
 
+  async comparePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
+  }
+
 }
