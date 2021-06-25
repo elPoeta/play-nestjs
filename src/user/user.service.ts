@@ -18,7 +18,7 @@ export class UserService {
     return await this.userRepository.save(newUser);
   }
 
-  registerResponse(userEntity: UserEntity): UserResponseInterface {
+  buildUserResponse(userEntity: UserEntity): UserResponseInterface {
     return {
       user: {
         ...userEntity,

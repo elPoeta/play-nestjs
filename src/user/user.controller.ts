@@ -12,6 +12,6 @@ export class UserController {
   @Post('users')
   async register(@Body('user') registerUserDto: RegisterUserDto): Promise<UserResponseInterface> {
     const userEntity: UserEntity = await this.userService.register(registerUserDto);
-    return this.userService.registerResponse(userEntity);
+    return this.userService.buildUserResponse(userEntity);
   }
 }
