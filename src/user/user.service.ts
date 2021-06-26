@@ -5,6 +5,7 @@ import { UserDto } from "./dto/userDto.dto";
 import { UserEntity } from "./user.entity";
 import { sign } from 'jsonwebtoken';
 import { UserResponseInterface } from "./types/userResponseInterace.interface";
+import { LoginUserDto } from "./dto/loginUserDto.dto";
 
 
 @Injectable()
@@ -18,7 +19,7 @@ export class UserService {
     return await this.userRepository.save(newUser);
   }
 
-  async login(userLogin: UserDto): Promise<UserEntity> {
+  async login(userLogin: LoginUserDto): Promise<UserEntity> {
     const user: UserEntity = await this.findUserByEmail(userLogin.email);
     if (!user) throw new HttpException('Bad Credentials', HttpStatus.UNPROCESSABLE_ENTITY);
     const isPasswordMatch = await user.comparePassword(userLogin.password);
