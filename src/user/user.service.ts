@@ -1,10 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { UserDto } from "./dto/userDto.dto";
+import { RegisterUserDto } from "./dto/registerUserDto.dto";
 import { UserEntity } from "./user.entity";
 import { sign } from 'jsonwebtoken';
 import { UserResponseInterface } from "./types/userResponseInterace.interface";
+import { LoginUserDto } from "./dto/loginUserDto.dto";
 
 
 @Injectable()
@@ -12,13 +13,25 @@ export class UserService {
 
   constructor(@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>) { }
 
-  async register(user: UserDto): Promise<UserEntity> {
+  async register(registerUser: RegisterUserDto): Promise<UserEntity> {
+    const userByEmail = await this.userRepository.findOne({
+      email: registerUser.email,
+    });
+    const userByUsername = await this.userRepository.findOne({
+      username: registerUser.username,
+    });
+    if (userByEmail || userByUsername) {
+      throw new HttpException(
+        'Email or username are taken',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
     const newUser = new UserEntity();
-    Object.assign(newUser, user);
+    Object.assign(newUser, registerUser);
     return await this.userRepository.save(newUser);
   }
 
-  async login(userLogin: UserDto): Promise<UserEntity> {
+  async login(userLogin: LoginUserDto): Promise<UserEntity> {
     const user: UserEntity = await this.findUserByEmail(userLogin.email);
     if (!user) throw new HttpException('Bad Credentials', HttpStatus.UNPROCESSABLE_ENTITY);
     const isPasswordMatch = await user.comparePassword(userLogin.password);
