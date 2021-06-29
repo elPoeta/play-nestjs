@@ -1,5 +1,6 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Post, Req, UsePipes, ValidationPipe } from "@nestjs/common";
 import { CustomExpressRequest } from "src/types/CustomExpressRequest";
+import { User } from "./decorators/user.decorator";
 import { LoginUserDto } from "./dto/loginUserDto.dto";
 import { RegisterUserDto } from "./dto/registerUserDto.dto";
 import { UserResponseInterface } from "./types/userResponseInterace.interface";
@@ -27,9 +28,9 @@ export class UserController {
 
 
   @Get('user')
-  async currentUser(@Req() req: CustomExpressRequest): Promise<UserResponseInterface> {
-    if (!req.user) throw new HttpException('Bad Credentials', HttpStatus.UNAUTHORIZED)
-    return req.user;
+  async currentUser(@User() user:UserResponseInterface ): Promise<UserResponseInterface> {
+    if (!user) throw new HttpException('Bad Credentials', HttpStatus.UNAUTHORIZED);
+    return user;
   }
 
 }
