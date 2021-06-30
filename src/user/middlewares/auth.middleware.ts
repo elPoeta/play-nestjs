@@ -22,17 +22,12 @@ export class AuthMiddleware implements NestMiddleware {
       next();
       return;
     }
-
     const token = authorization.split(' ')[1];
     try {
       const decode = verify(token, '5up3r53cr3t');
       const user = await this.userService.findUserById(decode.id);
-      req.user = {
-        user: {
-          ...user,
-          token
-        }
-      };
+      req.user = user;
+      req.token = token;
       next();
     } catch (err) {
       req.user = null;
