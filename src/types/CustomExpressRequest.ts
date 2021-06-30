@@ -1,7 +1,7 @@
 import { Request } from "express";
-import { UserResponseInterface } from "src/user/types/userResponseInterace.interface";
+import { UserEntity } from "src/user/user.entity";
 
 export interface CustomExpressRequest extends Request {
-  user?: UserResponseInterface,
+  user?: UserEntity,
   token?: string
 }

@@ -40,7 +40,7 @@ export class UserService {
     return user;
   }
 
-  async update(updateUserDto: UpdateUserDto, user:UserResponseInterface): Promise<UserEntity> {
+  async update(updateUserDto: UpdateUserDto, user: UserResponseInterface): Promise<UserEntity> {
     delete user.user.token;
     const newUser = new UserEntity();
     Object.assign(newUser, user.user);
@@ -56,12 +56,12 @@ export class UserService {
     return await this.userRepository.findOne({ id });
   }
 
-  buildUserResponse(userEntity: UserEntity): UserResponseInterface {
+  buildUserResponse(userEntity: UserEntity, token: string): UserResponseInterface {
     delete userEntity.password;
     return {
       user: {
         ...userEntity,
-        token: this.generateJWT(userEntity)
+        token: !token ? this.generateJWT(userEntity) : token
       }
     }
   }
