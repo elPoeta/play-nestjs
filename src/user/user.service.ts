@@ -7,12 +7,13 @@ import { sign } from 'jsonwebtoken';
 import { UserResponseInterface } from "./types/userResponseInterace.interface";
 import { LoginUserDto } from "./dto/loginUserDto.dto";
 import { UpdateUserDto } from "./dto/udateUserDtoi.dto";
+import { UserRepository } from "./user.repository";
 
 
 @Injectable()
 export class UserService {
 
-  constructor(@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>) { }
+  constructor(@InjectRepository(UserRepository) private userRepository: UserRepository) { }
 
   async register(registerUser: RegisterUserDto): Promise<UserEntity> {
     const userByEmail = await this.userRepository.findOne({
