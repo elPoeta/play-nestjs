@@ -7,7 +7,7 @@ import { sign } from 'jsonwebtoken';
 import { UserResponseInterface } from "./types/userResponseInterace.interface";
 import { LoginUserDto } from "./dto/loginUserDto.dto";
 import { UpdateUserDto } from "./dto/udateUserDtoi.dto";
-import { UserRepository } from "./userRepository.repository";
+import { UserRepository } from "./user.repository";
 
 
 @Injectable()
